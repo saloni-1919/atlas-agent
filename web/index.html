@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a1020" />
+  <title>Atlas Agent · AI Workspace</title>
+  <meta name="description" content="A local-first document intelligence workspace with sourced answers and human-approved actions." />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/assets/style.css" />
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">✦</div><div><strong>atlas<span>agent</span></strong><small>INTELLIGENCE WORKSPACE</small></div></div>
+    <div class="sidebar-label">WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+      <button class="nav-item" data-view="knowledge"><span>▤</span> Knowledge base</button>
+      <button class="nav-item" data-view="assistant"><span>✧</span> AI assistant</button>
+      <button class="nav-item" data-view="actions"><span>⇄</span> Action center <b id="pending-pill" hidden>0</b></button>
+      <button class="nav-item" data-view="settings"><span>⚙</span> System status</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="secure-dot"></div><div><strong>Local-first workspace</strong><small>Data stored on your machine</small></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div class="breadcrumbs">Workspace <span>/</span> <strong id="current-location">Overview</strong></div><div class="top-actions"><span id="mode-indicator" class="mode-chip">● Offline mode</span><span class="avatar" aria-label="Demo workspace">SA</span></div></header>
+    <div class="content">
+      <section id="overview" class="view active" aria-labelledby="overview-title">
+        <div class="eyebrow">YOUR INTELLIGENCE CENTER</div><div class="heading-row"><div><h1 id="overview-title">Good to have you here <span class="wave">✳</span></h1><p class="subtitle">Everything you need to turn documents into decisions.</p></div><button class="primary" data-go="knowledge">+ Add a document</button></div>
+        <div class="hero"><div class="hero-content"><div class="hero-kicker">✦ MEET YOUR WORKSPACE</div><h2>Your knowledge.<br /><em>At your fingertips.</em></h2><p>Ask grounded questions, find supporting sources, and keep critical actions under your control.</p><button class="hero-button" data-go="assistant">Ask Atlas <span>↗</span></button></div><div class="hero-art" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb-center">✳</div><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div></div></div>
+        <div class="section-heading"><h3>Workspace at a glance</h3><span>Live from your local database</span></div>
+        <div class="stat-grid"><article class="stat"><div class="stat-icon blue">▤</div><span>Documents</span><strong id="stat-docs">0</strong><small>Indexed in knowledge base</small></article><article class="stat"><div class="stat-icon purple">⇄</div><span>Total actions</span><strong id="stat-actions">0</strong><small>Proposed calculations</small></article><article class="stat"><div class="stat-icon amber">◷</div><span>Awaiting approval</span><strong id="stat-pending">0</strong><small>Require a human decision</small></article></div>
+        <div class="section-heading"><h3>Quick start</h3><span>Three steps to start working smarter</span></div>
+        <div class="quick-grid"><button class="quick-card" data-go="knowledge"><span class="quick-icon">01</span><strong>Add knowledge <span>↗</span></strong><small>Upload a text file or PDF, or paste content.</small></button><button class="quick-card" data-go="assistant"><span class="quick-icon">02</span><strong>Ask a question <span>↗</span></strong><small>Get answers backed by citations from your sources.</small></button><button class="quick-card" data-go="actions"><span class="quick-icon">03</span><strong>Control actions <span>↗</span></strong><small>Approve or reject proposed calculations.</small></button></div>
+      </section>
+
+      <section id="knowledge" class="view" aria-labelledby="knowledge-title"><div class="eyebrow">DOCUMENT INTELLIGENCE</div><div class="heading-row"><div><h1 id="knowledge-title">Knowledge base</h1><p class="subtitle">Give Atlas trusted context to work with.</p></div><span class="count-tag" id="document-count">0 documents</span></div>
+        <div class="two-col"><div class="panel"><div class="panel-heading"><span class="panel-icon">＋</span><div><h3>Add a document</h3><p>Upload a text file or enter content manually.</p></div></div><form id="document-form"><label for="doc-file" class="upload-area" tabindex="0" role="button"><span class="upload-symbol">↥</span><strong>Choose .txt, .md, or .pdf</strong><small id="file-label">Up to 3 MB · Text-based PDFs supported</small></label><input id="doc-file" type="file" accept=".txt,.md,.pdf,text/plain,text/markdown,application/pdf" hidden /><label class="field-label" for="doc-title">DOCUMENT TITLE</label><input id="doc-title" maxlength="120" placeholder="e.g., Customer support policy" required /><label class="field-label" for="doc-content">DOCUMENT CONTENT</label><textarea id="doc-content" rows="8" maxlength="40000" placeholder="Paste the text you want Atlas to understand..." required></textarea><button class="primary wide" type="submit">Add to knowledge base <span>↗</span></button><p class="input-note">Files are stored in your local SQLite database. Scanned PDFs without selectable text are not supported.</p></form></div>
+        <div class="panel"><div class="panel-heading"><span class="panel-icon purple-icon">▤</span><div><h3>Saved documents</h3><p>Indexed and available for questions.</p></div></div><label class="field-label" for="document-filter">SEARCH DOCUMENTS</label><input id="document-filter" type="search" placeholder="Filter your documents by title..." aria-label="Search saved documents" />
+        <div class="sample-row"><span>New here? Try a sample policy.</span><button id="sample-button" type="button" class="mini-btn">Load sample ↗</button></div><div id="documents-list" class="stack-list"></div></div></div>
+      </section>
+
+      <section id="assistant" class="view" aria-labelledby="assistant-title">
+  <div class="eyebrow">DOCUMENT INTELLIGENCE / CONVERSATIONS</div>
+  <div class="heading-row"><div><h1 id="assistant-title">AI assistant <span class="wave">✦</span></h1><p class="subtitle">Explore your knowledge, with conversations and traceable sources.</p></div><span class="count-tag">Evidence first · Local history</span></div>
+  <div class="conversation-workspace">
+    <aside class="history-panel" aria-label="Conversation history">
+      <div class="history-heading"><strong>Conversations</strong><button id="new-chat" type="button" class="history-add" aria-label="Start a new conversation" title="New conversation">＋</button></div>
+      <div class="history-caption">Saved securely in local SQLite</div>
+      <div id="conversation-list" class="conversation-list" aria-live="polite"></div>
+      <div class="history-foot"><span class="secure-dot"></span> Only on this device</div>
+    </aside>
+    <div class="chat-panel">
+      <div class="chat-header"><span class="assistant-avatar">✦</span><div><strong id="chat-title">New conversation</strong><small id="chat-status">Ask about your documents</small></div><button id="export-chat" type="button" class="mini-btn" title="Download conversation as Markdown">Export</button><span class="connected" id="chat-mode">● Local</span></div>
+      <div class="messages" id="messages" aria-live="polite"><div class="welcome"><div class="welcome-icon">✳</div><h3>What would you like to know?</h3><p>Ask something about your documents. Atlas shows the passages supporting each answer.</p><div class="prompts"><button data-prompt="When are refunds processed?">Refund processing ↗</button><button data-prompt="What does the policy say about remote work?">Remote work policy ↗</button><button data-prompt="/calc (1250-200)*0.15">Try approval tool ↗</button></div></div></div>
+      <form id="ask-form" class="composer"><label class="sr-only" for="question">Ask Atlas a question</label><textarea id="question" placeholder="Ask a question about your knowledge base..." rows="2" maxlength="1000" required></textarea><button type="submit" class="send-button" aria-label="Send question">➤</button></form>
+      <div class="composer-note">Atlas cites source passages and abstains when evidence is missing. Use /calc 2+2 to propose an approved tool action. Ctrl/⌘ + Enter to send.</div>
+    </div>
+  </div>
+</section>
+
+      <section id="actions" class="view" aria-labelledby="actions-title"><div class="eyebrow">HUMAN-IN-THE-LOOP</div><div class="heading-row"><div><h1 id="actions-title">Action center</h1><p class="subtitle">No calculations run until you approve them.</p></div><span class="count-tag">Approval required</span></div><div class="two-col"><div class="panel"><div class="panel-heading"><span class="panel-icon">＋</span><div><h3>Propose a calculation</h3><p>Create a pending action for manual approval.</p></div></div><form id="action-form"><label class="field-label" for="expression">ARITHMETIC EXPRESSION</label><input id="expression" placeholder="e.g., (1250 - 200) * 0.15" maxlength="100" required /><p class="input-note">Only numbers, +, −, ×, ÷ and parentheses are supported.</p><button class="primary wide" type="submit">Submit for approval <span>↗</span></button></form></div><div class="panel"><div class="panel-heading"><span class="panel-icon amber-icon">◷</span><div><h3>Activity & approvals</h3><p>Every proposed action stays visible here.</p></div></div><div id="actions-list" class="stack-list"></div></div></div></section>
+      <section id="settings" class="view" aria-labelledby="settings-title">
+        <div class="eyebrow">YOUR LOCAL ENVIRONMENT</div>
+        <div class="heading-row"><div><h1 id="settings-title">System status</h1><p class="subtitle">Model readiness and data transparency, without hidden settings.</p></div><button id="refresh-system" type="button" class="primary">↻ Check connection</button></div>
+        <div class="settings-grid">
+          <article class="panel"><div class="panel-heading"><span class="panel-icon">✦</span><div><h3>Answer engine</h3><p>Current runtime configuration</p></div></div>
+            <div class="setting-line"><span>Provider</span><strong id="system-provider">Loading...</strong></div>
+            <div class="setting-line"><span>Retrieval</span><strong id="system-retrieval">Loading...</strong></div>
+            <div class="setting-line"><span>AI connection</span><strong id="system-readiness">Checking...</strong></div>
+            <p class="input-note" id="system-detail">The workspace works offline by default; AI needs Ollama or an API key.</p>
+          </article>
+          <article class="panel"><div class="panel-heading"><span class="panel-icon purple-icon">⌁</span><div><h3>Local-first by design</h3><p>Know where your information goes</p></div></div>
+            <p class="status-copy">Documents, chats and approvals are stored in <strong>atlas.sqlite</strong> on your computer. Offline mode makes no AI service requests. Ollama runs on your PC. OpenAI mode sends selected source excerpts to its API.</p>
+            <p class="status-copy">This demonstration is designed for <strong>one local user</strong>. Do not expose it to the internet or upload confidential business documents.</p>
+          </article>
+        </div>
+        <div class="panel tips-panel"><h3>Quick reference</h3><p>Use <code>/calc (12+8)*2</code> in chat to propose a calculation. Approve it manually in Action center. Local AI setup instructions and backup/migration steps are in the included README.</p></div>
+      </section>
+    </div>
+    <footer>ATLAS AGENT <span>·</span> LOCAL DEMONSTRATION <span>·</span> BUILT FOR TRANSPARENT AI</footer>
+  </main>
+</div><dialog id="document-dialog" aria-labelledby="preview-title"><div class="dialog-heading"><div><div class="eyebrow">DOCUMENT PREVIEW</div><h3 id="preview-title">Document</h3></div><button id="close-preview" class="mini-btn" type="button" aria-label="Close document preview">Close ✕</button></div><pre id="preview-body"></pre></dialog><div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.migrating
+.env
+.DS_Store
+.coverage
+htmlcov/
+*.log
+backups/
+.idea/
+.vscode/
+playwright-report/
